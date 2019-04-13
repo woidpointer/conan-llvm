@@ -14,7 +14,10 @@ namespace :conan do
 
   desc "3) Test build..."
   task :build do
+    start_time = Time.now
     sh "conan build . --source-folder=tmp/source  --build-folder=tmp/build"
+    end_time = Time.now
+    puts("Execution duration: #{end_time - start_time}")
   end
 
   desc "4) Test package..."
