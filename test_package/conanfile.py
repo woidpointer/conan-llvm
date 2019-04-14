@@ -5,7 +5,7 @@ from conans import ConanFile, CMake, tools
 
 class LlvmTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake"
+    generators = ["cmake", "ycm"]
 
     def build(self):
         cmake = CMake(self)

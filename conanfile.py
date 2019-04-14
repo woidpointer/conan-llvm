@@ -1,5 +1,7 @@
 from conans import ConanFile, CMake, tools
 import os
+import glob
+
 
 class LlvmConan(ConanFile):
     name = "llvm"
@@ -15,7 +17,12 @@ class LlvmConan(ConanFile):
     generators = "cmake"
 
     def source(self):
-        self.run("git clone https://github.com/llvm/llvm-project.git -b llvmorg-8.0.0 --depth 1")
+        cmd = []
+        cmd.append("git clone")
+        cmd.append("https://github.com/llvm/llvm-project.git -b")
+        cmd.append("llvmorg-{} --depth 1".format(self.version))
+
+        self.run(" ".join(cmd))
 
     def build(self):
         cmake = CMake(self)
@@ -33,4 +40,12 @@ class LlvmConan(ConanFile):
     def package_info(self):
         self.cpp_info.libdirs = ["lib"]
         self.cpp_info.bindirs = ["bin"]
+        # Add everything what we build into the package:
+        # replace leading lib/libWhatever to nothing
+        files = [f.replace("lib/lib", "") for f in glob.glob("lib/*.a")]
+        # replace trailing .a to nothing
+        files = [f.replace(".a", "") for f in files]
+        self.cpp_info.libs = list(files)
+
+
 

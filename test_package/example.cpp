@@ -2,7 +2,6 @@
 
 #include <clang/Basic/Version.h>
 
-
 int main() {
 
   std::string v = clang::getClangFullVersion();

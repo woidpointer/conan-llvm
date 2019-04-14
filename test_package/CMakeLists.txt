@@ -8,7 +8,10 @@ add_executable(example example.cpp)
 
 message(STATUS "------> ${CONAN_LIBS}")
 
-target_link_libraries(example ${CONAN_LIBS})
+target_link_libraries(example 
+  ${CONAN_LIBS}
+  pthread 
+  )
 
 
 

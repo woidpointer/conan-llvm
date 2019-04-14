@@ -30,9 +30,16 @@ namespace :conan do
     cmd = []
     cmd << "conan export-pkg . woidpointer/testing"
     cmd <<  "--source-folder=tmp/source --build-folder=tmp/build"
+    cmd <<  "--force"
     sh cmd.join(" ")
   end
 
+  desc "6) Test test..."
+  task :test do
+    cmd = []
+    cmd << "conan test test_package  llvm/8.0.0@woidpointer/testing"
+    sh cmd.join(" ")
+  end
 
 
 end
