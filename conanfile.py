@@ -25,11 +25,17 @@ class LlvmConan(ConanFile):
         self.run(" ".join(cmd))
 
     def build(self):
-        cmake = CMake(self)
+        
+        if self.settings.compiler == 'Visual Studio':
+            cmake = CMake(self, toolset="v141")            
+        else:
+            cmake = CMake(self)                       
+        
         cmake.definitions["LLVM_ENABLE_PROJECTS"] = "clang"
         source_sub_folder = "{}/llvm-project/llvm".format(self.source_folder)
-        cmake.configure(source_folder=source_sub_folder)
         cmake.parallel = False
+        #print(cmake.command_line)
+        cmake.configure(source_folder=source_sub_folder)                      
         cmake.build()
         cmake.install()
 
@@ -42,9 +48,10 @@ class LlvmConan(ConanFile):
         self.cpp_info.bindirs = ["bin"]
         # Add everything what we build into the package:
         # replace leading lib/libWhatever to nothing
-        files = [f.replace("lib/lib", "") for f in glob.glob("lib/*.a")]
-        # replace trailing .a to nothing
-        files = [f.replace(".a", "") for f in files]
+        files = [os.path.basename(f) for f in glob.glob("lib/*.lib")]
+        # replace fileextenstion to nothing, to get the "raw" library name
+        # in order to register this name to conan/cmake
+        files = list(map(lambda f: os.path.splitext(f)[0], files))
         self.cpp_info.libs = list(files)
 
 
