@@ -15,14 +15,18 @@ class LlvmConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
+    self_dir = os.getcwd()
 
     def source(self):
         cmd = []
         cmd.append("git clone")
         cmd.append("https://github.com/llvm/llvm-project.git -b")
         cmd.append("llvmorg-{} --depth 1".format(self.version))
-
         self.run(" ".join(cmd))
+
+        # apply the cmake patch
+        source_dir = "{}/llvm-project".format(self.source_folder)
+        tools.patch(patch_file="{}/cmake_include_interface.patch".format(self.self_dir), base_path=source_dir)
 
     def build(self):
         

@@ -1,0 +1,13 @@
+diff --git a/clang/cmake/modules/AddClang.cmake b/clang/cmake/modules/AddClang.cmake
+index 7e22f16f3..2b79f473a 100644
+--- a/clang/cmake/modules/AddClang.cmake
++++ b/clang/cmake/modules/AddClang.cmake
+@@ -87,6 +87,8 @@ macro(add_clang_library name)
+ 
+   if(TARGET ${name})
+     target_link_libraries(${name} INTERFACE ${LLVM_COMMON_LIBS})
++    # @@@cma: Add include directories in the usage requirements
++    target_include_directories(${name} INTERFACE $<INSTALL_INTERFACE:include>)
+ 
+     if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY OR ${name} STREQUAL "libclang")
+ 
