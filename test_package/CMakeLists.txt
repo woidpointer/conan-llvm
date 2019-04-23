@@ -9,6 +9,13 @@ find_package(Clang REQUIRED)
 
 add_executable(example example.cpp)
 
+
+if(WIN32)
+target_link_libraries(example 
+  clangTooling 
+  )
+else(WIN32)
+
 target_compile_options(example 
   PRIVATE
   -fno-rtti
@@ -18,13 +25,5 @@ target_compile_options(example
 target_link_libraries(example 
   clangTooling 
   )
+endif(WIN32)
 
-
-
-
-
-# CTest is a testing tool that can be used to test your project.
-# enable_testing()
-# add_test(NAME example
-#          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-#          COMMAND example)
