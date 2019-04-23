@@ -5,6 +5,11 @@
 #define __STDC_LIMIT_MACROS
 #define __STDC_CONSTANT_MACROS
 
+#if defined _MSC_VER
+#pragma warning( push )
+#pragma warning(disable : 4244 4267 4146 4141 4291)
+#endif
+
 #include <clang/AST/AST.h>
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/RecordLayout.h>
@@ -18,6 +23,11 @@
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/Support/raw_ostream.h>
+
+#if defined _MSC_VER
+#pragma warning( pop ) 
+#endif
+
 
 class FindNamedClassVisitor
     : public clang::RecursiveASTVisitor<FindNamedClassVisitor> {
