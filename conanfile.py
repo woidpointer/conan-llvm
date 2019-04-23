@@ -27,6 +27,7 @@ class LlvmConan(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.definitions["LLVM_ENABLE_PROJECTS"] = "clang"
+        cmake.definitions["LLVM_ENABLE_ZLIB"] = "OFF"
         source_sub_folder = "{}/llvm-project/llvm".format(self.source_folder)
         cmake.configure(source_folder=source_sub_folder)
         cmake.parallel = False

@@ -4,13 +4,19 @@ project(PackageTest CXX)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+find_package(Clang REQUIRED)
+
+
 add_executable(example example.cpp)
 
-message(STATUS "------> ${CONAN_LIBS}")
+target_compile_options(example 
+  PRIVATE
+  -fno-rtti
+  -fno-exceptions
+)
 
 target_link_libraries(example 
-  ${CONAN_LIBS}
-  pthread 
+  clangTooling 
   )
 
 
