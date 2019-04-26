@@ -23,6 +23,9 @@ class LlvmConan(ConanFile):
     generators = "cmake"
     self_dir = os.getcwd()
 
+    
+    exports_sources = '*.patch'
+
     def source(self):
         cmd = []
         cmd.append("git clone")
