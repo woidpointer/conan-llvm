@@ -1,5 +1,7 @@
 test_package/build
 tmp
+.rake_tasks~
+
 
 
 

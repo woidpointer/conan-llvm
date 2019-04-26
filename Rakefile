@@ -1,4 +1,16 @@
+require 'rake/clean'
 
+
+CLOBBER.include("tmp")
+
+namespace :env do
+  1.upto(8) do |n|
+    desc "Set CONAN_CPU_COUNT to #{n}"
+    task "cpu_count_#{n}".to_sym do 
+      ENV['CONAN_CPU_COUNT'] = "#{n}"
+    end
+  end
+end
 
 namespace :conan do
   desc "1) Test source..."
