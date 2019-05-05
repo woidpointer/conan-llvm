@@ -53,6 +53,7 @@ namespace :conan do
     sh cmd.join(" ")
   end
 
+  desc "create a stable package"
   task :create_stable do
     cmd = []
     cmd <<  "conan create . woidpointer/stable"
