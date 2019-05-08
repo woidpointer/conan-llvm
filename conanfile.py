@@ -24,6 +24,7 @@ class LlvmConan(ConanFile):
     self_dir = os.getcwd()
 
     exports = '*.patch'
+    short_paths = True
 
     def source(self):
         cmd = []
@@ -31,16 +32,23 @@ class LlvmConan(ConanFile):
         cmd.append("https://github.com/llvm/llvm-project.git -b")
         cmd.append("llvmorg-{} --depth 1".format(self.version))
         self.run(" ".join(cmd))
+        
+        cmake_list_file = "{}/llvm-project/llvm/CMakeLists.txt".format(self.source_folder)
+        tools.replace_in_file(cmake_list_file, "LANGUAGES C CXX ASM)",
+                              '''LANGUAGES C CXX ASM)
+                              
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()''')
+
+
 
         # apply the cmake patch
         source_dir = "{}/llvm-project".format(self.source_folder)
         tools.patch(patch_file="{}/cmake_include_interface.patch".format(self.self_dir), base_path=source_dir)
 
     def build(self):
-        if self.settings.compiler == 'Visual Studio':
-            cmake = CMake(self, toolset="v141")            
-        else:
-            cmake = CMake(self) 
+
+        cmake = CMake(self,msbuild_verbosity="detailed") 
 
         cmake.definitions["LLVM_ENABLE_PROJECTS"] = "clang"
         cmake.definitions["LLVM_ENABLE_ZLIB"] = "ON" if self.options.enable_zlib else "OFF"
@@ -48,7 +56,8 @@ class LlvmConan(ConanFile):
         source_sub_folder = "{}/llvm-project/llvm".format(self.source_folder)
         #print(cmake.command_line)
         cmake.configure(source_folder=source_sub_folder)                      
-        cmake.build()
+        #cmake.build()
+        self.run('cmake --build . %s' % cmake.build_config)
         cmake.install()
 
     def package(self):
