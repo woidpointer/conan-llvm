@@ -14,12 +14,12 @@ class LlvmConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {
             "shared": [True, False],
-            "enable_zlib": [True, False] 
+            "enable_zlib": [True, False],
             "enable_rtti": [True, False] 
             }
     default_options = {
             "shared": False,
-            "enable_zlib": False
+            "enable_zlib": False,
             "enable_rtti": True 
             }
     generators = "cmake"
