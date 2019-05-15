@@ -15,10 +15,12 @@ class LlvmConan(ConanFile):
     options = {
             "shared": [True, False],
             "enable_zlib": [True, False] 
+            "enable_rtti": [True, False] 
             }
     default_options = {
             "shared": False,
             "enable_zlib": False
+            "enable_rtti": True 
             }
     generators = "cmake"
     self_dir = os.getcwd()
@@ -52,6 +54,7 @@ conan_basic_setup()''')
 
         cmake.definitions["LLVM_ENABLE_PROJECTS"] = "clang"
         cmake.definitions["LLVM_ENABLE_ZLIB"] = "ON" if self.options.enable_zlib else "OFF"
+        cmake.definitions["LLVM_ENABLE_RTTI"] = "ON" if self.options.enable_zlib else "OFF"
 
         source_sub_folder = "{}/llvm-project/llvm".format(self.source_folder)
         #print(cmake.command_line)

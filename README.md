@@ -13,6 +13,7 @@ libraries and files which comes with the original install target.
 | Option              | Default | Description                                  |
 |---------------------|---------|----------------------------------------------|
 | enable_zlib         | False   | Enables the usage of zlib library            | 
+| enable_rtti         | True    | Enables the RTTI enabled build               | 
 
 
 ## LLVM Patch 
